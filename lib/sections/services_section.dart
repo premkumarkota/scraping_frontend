@@ -7,79 +7,89 @@ class ServicesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 100, horizontal: 100),
-      color: const Color(0xFFF8F9FA),
-      child: Column(
-        children: [
-          // Header
-          Container(
-            width: 50,
-            height: 4,
-            decoration: BoxDecoration(
-              color: const Color(0xFF0089D0),
-              borderRadius: BorderRadius.circular(2),
-            ),
-          ).animate().scale(duration: 500.ms),
-          const SizedBox(height: 20),
-          Text(
-            'OUR SERVICES',
-            style: GoogleFonts.lato(
-              letterSpacing: 3,
-              color: const Color(0xFF0089D0),
-              fontWeight: FontWeight.bold,
-              fontSize: 14,
-            ),
-          ).animate().fadeIn(delay: 200.ms),
-          const SizedBox(height: 15),
-          Text(
-            'Legal Expertise You Can Trust',
-            textAlign: TextAlign.center,
-            style: GoogleFonts.playfairDisplay(
-              fontSize: 42,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xFF0D1B2A),
-            ),
-          ).animate().fadeIn(delay: 300.ms).slideY(begin: 0.2),
-          const SizedBox(height: 60),
-          // Services Grid
-          Wrap(
-            spacing: 30,
-            runSpacing: 30,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isMobile = constraints.maxWidth < 900;
+
+        return Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(
+            vertical: 100,
+            horizontal: isMobile ? 30 : 100,
+          ),
+          color: const Color(0xFFF8F9FA),
+          child: Column(
             children: [
-              _ServiceCard(
-                icon: Icons.account_balance,
-                title: 'GST Advisory',
-                description:
-                    'Comprehensive GST compliance, registration, returns filing, and advisory services.',
-                index: 0,
-              ),
-              _ServiceCard(
-                icon: Icons.local_shipping,
-                title: 'Customs & Trade',
-                description:
-                    'Expert guidance on customs procedures, trade policies, and import-export regulations.',
-                index: 1,
-              ),
-              _ServiceCard(
-                icon: Icons.document_scanner,
-                title: 'Tax Litigation',
-                description:
-                    'Representation before appellate authorities, tribunals, and courts for tax disputes.',
-                index: 2,
-              ),
-              _ServiceCard(
-                icon: Icons.policy,
-                title: 'Compliance Audit',
-                description:
-                    'Thorough audit services to ensure regulatory compliance and risk mitigation.',
-                index: 3,
+              // Header
+              Container(
+                width: 50,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF0089D0),
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ).animate().scale(duration: 500.ms),
+              const SizedBox(height: 20),
+              Text(
+                'OUR SERVICES',
+                style: GoogleFonts.lato(
+                  letterSpacing: 3,
+                  color: const Color(0xFF0089D0),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ).animate().fadeIn(delay: 200.ms),
+              const SizedBox(height: 15),
+              Text(
+                'Legal Expertise You Can Trust',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.playfairDisplay(
+                  fontSize: 42,
+                  fontWeight: FontWeight.bold,
+                  color: const Color(0xFF0D1B2A),
+                ),
+              ).animate().fadeIn(delay: 300.ms).slideY(begin: 0.2),
+              const SizedBox(height: 60),
+              // Services Grid
+              Wrap(
+                spacing: 30,
+                runSpacing: 30,
+                alignment: WrapAlignment.center,
+                children: [
+                  _ServiceCard(
+                    icon: Icons.account_balance,
+                    title: 'GST Advisory',
+                    description:
+                        'Comprehensive GST compliance, registration, returns filing, and advisory services.',
+                    index: 0,
+                  ),
+                  _ServiceCard(
+                    icon: Icons.local_shipping,
+                    title: 'Customs & Trade',
+                    description:
+                        'Expert guidance on customs procedures, trade policies, and import-export regulations.',
+                    index: 1,
+                  ),
+                  _ServiceCard(
+                    icon: Icons.document_scanner,
+                    title: 'Tax Litigation',
+                    description:
+                        'Representation before appellate authorities, tribunals, and courts for tax disputes.',
+                    index: 2,
+                  ),
+                  _ServiceCard(
+                    icon: Icons.policy,
+                    title: 'Compliance Audit',
+                    description:
+                        'Thorough audit services to ensure regulatory compliance and risk mitigation.',
+                    index: 3,
+                  ),
+                ],
               ),
             ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

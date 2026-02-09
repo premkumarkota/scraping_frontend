@@ -6,37 +6,58 @@ class StatsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 100, horizontal: 100),
-      color: const Color(0xFF002855),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _buildStat('26', 'YEARS OF EXPERTISE'),
-          Container(
-            height: 80,
-            width: 1,
-            color: Colors.white24,
-            margin: const EdgeInsets.symmetric(horizontal: 50),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isMobile = constraints.maxWidth < 900;
+
+        return Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(
+            vertical: 100,
+            horizontal: isMobile ? 30 : 100,
           ),
-          _buildStat('10+', 'INDIAN CITIES'),
-          Container(
-            height: 80,
-            width: 1,
-            color: Colors.white24,
-            margin: const EdgeInsets.symmetric(horizontal: 50),
-          ),
-          _buildStat('500+', 'CLIENTS SERVED'),
-          Container(
-            height: 80,
-            width: 1,
-            color: Colors.white24,
-            margin: const EdgeInsets.symmetric(horizontal: 50),
-          ),
-          _buildStat('15+', 'LEGAL EXPERTS'),
-        ],
-      ),
+          color: const Color(0xFF002855),
+          child: isMobile
+              ? Column(
+                  children: [
+                    _buildStat('26', 'YEARS OF EXPERTISE'),
+                    const SizedBox(height: 40),
+                    _buildStat('10+', 'INDIAN CITIES'),
+                    const SizedBox(height: 40),
+                    _buildStat('500+', 'CLIENTS SERVED'),
+                    const SizedBox(height: 40),
+                    _buildStat('15+', 'LEGAL EXPERTS'),
+                  ],
+                )
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildStat('26', 'YEARS OF EXPERTISE'),
+                    Container(
+                      height: 80,
+                      width: 1,
+                      color: Colors.white24,
+                      margin: const EdgeInsets.symmetric(horizontal: 50),
+                    ),
+                    _buildStat('10+', 'INDIAN CITIES'),
+                    Container(
+                      height: 80,
+                      width: 1,
+                      color: Colors.white24,
+                      margin: const EdgeInsets.symmetric(horizontal: 50),
+                    ),
+                    _buildStat('500+', 'CLIENTS SERVED'),
+                    Container(
+                      height: 80,
+                      width: 1,
+                      color: Colors.white24,
+                      margin: const EdgeInsets.symmetric(horizontal: 50),
+                    ),
+                    _buildStat('15+', 'LEGAL EXPERTS'),
+                  ],
+                ),
+        );
+      },
     );
   }
 

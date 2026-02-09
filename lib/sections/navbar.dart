@@ -7,53 +7,83 @@ class HNANavbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 20),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 10,
-            offset: Offset(0, 2),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isMobile = constraints.maxWidth < 900;
+
+        return Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: isMobile ? 20 : 60,
+            vertical: 20,
           ),
-        ],
-      ),
-      child: Row(
-        children: [
-          // Logo
-          Row(
-            children: [
-              SvgPicture.asset('assets/images/hna.svg', height: 50),
-              const SizedBox(width: 12),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 10,
+                offset: Offset(0, 2),
+              ),
             ],
           ),
-          const Spacer(),
-          // Navigation Links
-          _NavLink(text: 'Home', isActive: true),
-          _NavLink(text: 'About'),
-          _NavLink(text: 'Services'),
-          _NavLink(text: 'Team'),
-          _NavLink(text: 'Contact'),
-          const SizedBox(width: 30),
-          // CTA Button
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF002855),
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+          child: Row(
+            children: [
+              // Logo
+              Row(
+                children: [
+                  SvgPicture.asset(
+                    'assets/images/hna.svg',
+                    height: isMobile ? 40 : 50,
+                  ),
+                  const SizedBox(width: 12),
+                ],
               ),
-            ),
-            child: Text(
-              'Get Consultation',
-              style: GoogleFonts.lato(fontWeight: FontWeight.w600),
-            ),
+              const Spacer(),
+
+              if (isMobile)
+                // Mobile Menu Button
+                IconButton(
+                  icon: const Icon(
+                    Icons.menu,
+                    color: Color(0xFF002855),
+                    size: 30,
+                  ),
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                )
+              else ...[
+                // Desktop Navigation Links
+                _NavLink(text: 'Home', isActive: true),
+                _NavLink(text: 'About'),
+                _NavLink(text: 'Services'),
+                _NavLink(text: 'Team'),
+                _NavLink(text: 'Contact'),
+                const SizedBox(width: 30),
+                // CTA Button
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF002855),
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 30,
+                      vertical: 15,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: Text(
+                    'Get Consultation',
+                    style: GoogleFonts.lato(fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ],
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

@@ -6,139 +6,183 @@ class FooterSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 100),
-      decoration: const BoxDecoration(color: Color(0xFF0D1B2A)),
-      child: Column(
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isMobile = constraints.maxWidth < 900;
+
+        return Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(
+            vertical: 60,
+            horizontal: isMobile ? 30 : 100,
+          ),
+          decoration: const BoxDecoration(color: Color(0xFF0D1B2A)),
+          child: Column(
             children: [
-              // Logo and Description
-              Expanded(
-                flex: 3,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'HNA LAW CHAMBERS',
-                      style: GoogleFonts.playfairDisplay(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+              isMobile
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildLogoSection(),
+                        const SizedBox(height: 40),
+                        _buildQuickLinksSection(),
+                        const SizedBox(height: 40),
+                        _buildServicesSection(),
+                        const SizedBox(height: 40),
+                        _buildContactSection(),
+                      ],
+                    )
+                  : Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(flex: 3, child: _buildLogoSection()),
+                        const SizedBox(width: 60),
+                        Expanded(flex: 2, child: _buildQuickLinksSection()),
+                        Expanded(flex: 2, child: _buildServicesSection()),
+                        Expanded(flex: 3, child: _buildContactSection()),
+                      ],
                     ),
-                    const SizedBox(height: 20),
-                    Text(
-                      'Providing expert legal solutions in GST, Customs, and indirect taxation with integrity, knowledge, and independence.',
-                      style: GoogleFonts.lato(
-                        fontSize: 14,
-                        height: 1.7,
-                        color: Colors.white60,
-                      ),
+              const SizedBox(height: 50),
+              Container(height: 1, color: Colors.white12),
+              const SizedBox(height: 30),
+              isMobile
+                  ? Column(
+                      children: [
+                        Text(
+                          '© 2024 HNA Law Chambers. All Rights Reserved.',
+                          style: GoogleFonts.lato(
+                            fontSize: 13,
+                            color: Colors.white38,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            _SocialIcon(icon: Icons.facebook),
+                            _SocialIcon(icon: Icons.info),
+                            _SocialIcon(icon: Icons.mail),
+                          ],
+                        ),
+                      ],
+                    )
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '© 2024 HNA Law Chambers. All Rights Reserved.',
+                          style: GoogleFonts.lato(
+                            fontSize: 13,
+                            color: Colors.white38,
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            _SocialIcon(icon: Icons.facebook),
+                            _SocialIcon(icon: Icons.info),
+                            _SocialIcon(icon: Icons.mail),
+                          ],
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 60),
-              // Quick Links
-              Expanded(
-                flex: 2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Quick Links',
-                      style: GoogleFonts.lato(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    _FooterLink(text: 'Home'),
-                    _FooterLink(text: 'About Us'),
-                    _FooterLink(text: 'Services'),
-                    _FooterLink(text: 'Team'),
-                    _FooterLink(text: 'Contact'),
-                  ],
-                ),
-              ),
-              // Services
-              Expanded(
-                flex: 2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Services',
-                      style: GoogleFonts.lato(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    _FooterLink(text: 'GST Advisory'),
-                    _FooterLink(text: 'Customs & Trade'),
-                    _FooterLink(text: 'Tax Litigation'),
-                    _FooterLink(text: 'Compliance Audit'),
-                  ],
-                ),
-              ),
-              // Contact Info
-              Expanded(
-                flex: 3,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Contact Us',
-                      style: GoogleFonts.lato(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    _ContactItem(
-                      icon: Icons.location_on,
-                      text: 'Bengaluru, Hyderabad, Chennai, Mumbai',
-                    ),
-                    const SizedBox(height: 12),
-                    _ContactItem(
-                      icon: Icons.email,
-                      text: 'info@hnalawchambers.com',
-                    ),
-                    const SizedBox(height: 12),
-                    _ContactItem(icon: Icons.phone, text: '+91 9876543210'),
-                  ],
-                ),
-              ),
             ],
           ),
-          const SizedBox(height: 50),
-          Container(height: 1, color: Colors.white12),
-          const SizedBox(height: 30),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                '© 2024 HNA Law Chambers. All Rights Reserved.',
-                style: GoogleFonts.lato(fontSize: 13, color: Colors.white38),
-              ),
-              Row(
-                children: [
-                  _SocialIcon(icon: Icons.facebook),
-                  _SocialIcon(icon: Icons.info),
-                  _SocialIcon(icon: Icons.mail),
-                ],
-              ),
-            ],
+        );
+      },
+    );
+  }
+
+  Widget _buildLogoSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'HNA LAW CHAMBERS',
+          style: GoogleFonts.playfairDisplay(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
-        ],
-      ),
+        ),
+        const SizedBox(height: 20),
+        Text(
+          'Providing expert legal solutions in GST, Customs, and indirect taxation with integrity, knowledge, and independence.',
+          style: GoogleFonts.lato(
+            fontSize: 14,
+            height: 1.7,
+            color: Colors.white60,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildQuickLinksSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Quick Links',
+          style: GoogleFonts.lato(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        const SizedBox(height: 20),
+        _FooterLink(text: 'Home'),
+        _FooterLink(text: 'About Us'),
+        _FooterLink(text: 'Services'),
+        _FooterLink(text: 'Team'),
+        _FooterLink(text: 'Contact'),
+      ],
+    );
+  }
+
+  Widget _buildServicesSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Services',
+          style: GoogleFonts.lato(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        const SizedBox(height: 20),
+        _FooterLink(text: 'GST Advisory'),
+        _FooterLink(text: 'Customs & Trade'),
+        _FooterLink(text: 'Tax Litigation'),
+        _FooterLink(text: 'Compliance Audit'),
+      ],
+    );
+  }
+
+  Widget _buildContactSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Contact Us',
+          style: GoogleFonts.lato(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        const SizedBox(height: 20),
+        _ContactItem(
+          icon: Icons.location_on,
+          text: 'Bengaluru, Hyderabad, Chennai, Mumbai',
+        ),
+        const SizedBox(height: 12),
+        _ContactItem(icon: Icons.email, text: 'info@hnalawchambers.com'),
+        const SizedBox(height: 12),
+        _ContactItem(icon: Icons.phone, text: '+91 9876543210'),
+      ],
     );
   }
 }

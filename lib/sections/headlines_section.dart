@@ -135,8 +135,8 @@ class _HeadlinesSectionState extends State<HeadlinesSection> {
           ),
         ).animate().fadeIn(delay: 300.ms).slideY(begin: 0.2),
         const SizedBox(height: 15),
-        SizedBox(
-          width: 600,
+        ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 600),
           child: Text(
             'Stay updated with the latest legal news, tax updates, and court rulings from trusted sources.',
             textAlign: TextAlign.center,
@@ -278,7 +278,7 @@ class _HeadlinesSectionState extends State<HeadlinesSection> {
           children: displayedUpdates.asMap().entries.map((entry) {
             return SizedBox(
               width: isMobile ? double.infinity : cardWidth,
-              child: _buildHeadlineCard(entry.value, entry.key),
+              child: _buildHeadlineCard(entry.value, entry.key, isMobile),
             );
           }).toList(),
         );
@@ -286,7 +286,7 @@ class _HeadlinesSectionState extends State<HeadlinesSection> {
     );
   }
 
-  Widget _buildHeadlineCard(LawUpdate update, int index) {
+  Widget _buildHeadlineCard(LawUpdate update, int index, bool isMobile) {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
@@ -322,78 +322,36 @@ class _HeadlinesSectionState extends State<HeadlinesSection> {
                         },
                         hoverColor: const Color(0xFFF8F9FA),
                         child: Padding(
-                          padding: const EdgeInsets.all(24),
+                          padding: EdgeInsets.all(isMobile ? 16 : 24),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               // Source badge and time
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 6,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: _getSourceColor(
-                                        update.sourceId,
-                                      ).withOpacity(0.1),
-                                      borderRadius: BorderRadius.circular(20),
-                                      border: Border.all(
-                                        color: _getSourceColor(
-                                          update.sourceId,
-                                        ).withOpacity(0.3),
-                                      ),
-                                    ),
-                                    child: Text(
-                                      _getSourceName(update.sourceId),
-                                      style: GoogleFonts.lato(
-                                        color: _getSourceColor(update.sourceId),
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 10,
-                                      vertical: 5,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xFFF5F5F5),
-                                      borderRadius: BorderRadius.circular(6),
-                                    ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
+                              isMobile
+                                  ? Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        const Icon(
-                                          Icons.schedule,
-                                          size: 14,
-                                          color: Color(0xFF888888),
-                                        ),
-                                        const SizedBox(width: 4),
-                                        Text(
-                                          _getTimeAgo(update.scrapedAt),
-                                          style: GoogleFonts.lato(
-                                            color: const Color(0xFF888888),
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
+                                        _buildSourceBadge(update.sourceId),
+                                        const SizedBox(height: 8),
+                                        _buildTimeBadge(update.scrapedAt),
+                                      ],
+                                    )
+                                  : Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        _buildSourceBadge(update.sourceId),
+                                        _buildTimeBadge(update.scrapedAt),
                                       ],
                                     ),
-                                  ),
-                                ],
-                              ),
                               const SizedBox(height: 20),
                               // Title
                               Text(
                                 update.title,
                                 style: GoogleFonts.lato(
                                   color: const Color(0xFF1A1A1A),
-                                  fontSize: 17,
+                                  fontSize: isMobile ? 15 : 17,
                                   fontWeight: FontWeight.w700,
                                   height: 1.4,
                                 ),
@@ -430,6 +388,50 @@ class _HeadlinesSectionState extends State<HeadlinesSection> {
                 .animate(delay: Duration(milliseconds: 100 * index))
                 .fadeIn(duration: 500.ms)
                 .slideX(begin: index.isEven ? -0.1 : 0.1),
+      ),
+    );
+  }
+
+  Widget _buildSourceBadge(int sourceId) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: _getSourceColor(sourceId).withOpacity(0.1),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: _getSourceColor(sourceId).withOpacity(0.3)),
+      ),
+      child: Text(
+        _getSourceName(sourceId),
+        style: GoogleFonts.lato(
+          color: _getSourceColor(sourceId),
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTimeBadge(DateTime date) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF5F5F5),
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.schedule, size: 14, color: Color(0xFF888888)),
+          const SizedBox(width: 4),
+          Text(
+            _getTimeAgo(date),
+            style: GoogleFonts.lato(
+              color: const Color(0xFF888888),
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
       ),
     );
   }

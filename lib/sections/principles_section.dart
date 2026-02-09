@@ -9,33 +9,39 @@ class PrinciplesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 120, horizontal: 100),
-      color: Colors.white,
-      child: Column(
-        children: [
-          Text(
-            'GUIDING PRINCIPLES',
-            style: GoogleFonts.lato(
-              letterSpacing: 2,
-              color: const Color(0xFF0089D0),
-              fontWeight: FontWeight.bold,
-              fontSize: 14,
-            ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isMobile = constraints.maxWidth < 900;
+
+        return Container(
+          padding: EdgeInsets.symmetric(
+            vertical: 100,
+            horizontal: isMobile ? 30 : 100,
           ),
-          const SizedBox(height: 15),
-          Text(
-            'For Excellence in Legal Practice',
-            style: GoogleFonts.playfairDisplay(
-              fontSize: 36,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xFF002855),
-            ),
-          ),
-          const SizedBox(height: 60),
-          LayoutBuilder(
-            builder: (context, constraints) {
-              return Wrap(
+          color: Colors.white,
+          child: Column(
+            children: [
+              Text(
+                'GUIDING PRINCIPLES',
+                style: GoogleFonts.lato(
+                  letterSpacing: 2,
+                  color: const Color(0xFF0089D0),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(height: 15),
+              Text(
+                'For Excellence in Legal Practice',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.playfairDisplay(
+                  fontSize: isMobile ? 28 : 36,
+                  fontWeight: FontWeight.bold,
+                  color: const Color(0xFF002855),
+                ),
+              ),
+              const SizedBox(height: 60),
+              Wrap(
                 spacing: 30,
                 runSpacing: 30,
                 alignment: WrapAlignment.center,
@@ -71,11 +77,11 @@ class PrinciplesSection extends StatelessWidget {
                     FontAwesomeIcons.users,
                   ),
                 ].animate(interval: 100.ms).fadeIn().slideY(begin: 0.2),
-              );
-            },
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
